@@ -8,6 +8,7 @@ export const GlobalStyle = createGlobalStyle`
       sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: lightgray;
   }
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -26,5 +27,8 @@ export const GlobalStyle = createGlobalStyle`
   h6,
   p {
     margin: 0;
+  }
+  img{
+    display: block;
   }
 `;
