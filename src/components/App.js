@@ -3,6 +3,7 @@ import { SearchBar } from 'components/SearchBar/SeachBar';
 import { fetchImages } from 'components/ImageApi/ImageApi';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { ToolBar } from 'components/ToolBar/ToolBar';
+import { Message } from './Message/Message';
 import { Loader } from './Loader/Loader';
 
 export class App extends Component {
@@ -11,7 +12,7 @@ export class App extends Component {
     page: 0,
     totalPages: 0,
     images: [],
-    isLoading: false,
+    process: '',
     error: '',
   };
 
@@ -25,16 +26,19 @@ export class App extends Component {
     const { q, page } = this.state;
     if (prevstate.q !== q || prevstate.page !== page) {
       try {
-        this.setState({ isLoading: true, error: '' });
+        this.setState({
+          process: "I'm working, wait few seconds, please.",
+          error: '',
+        });
         const { images, totalPages } = await fetchImages(q, page);
         this.setState({ images, totalPages });
       } catch {
         this.setState({
-          error: 'Sorry ... something is wrong',
+          error: 'Sorry, ... something is wrong.',
           q: '',
         });
       } finally {
-        this.setState({ isLoading: false });
+        this.setState({ process: '' });
       }
     }
   }
@@ -58,11 +62,11 @@ export class App extends Component {
   };
 
   render() {
-    const { q, images, page, totalPages, error, isLoading } = this.state;
+    const { q, images, page, totalPages, error, process } = this.state;
     return (
       <>
         <SearchBar onSubmit={this.handlerSearch} />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {error && <Message type={'error'}>{error}</Message>}
         {totalPages > 0 && (
           <ToolBar
             query={q}
@@ -71,8 +75,9 @@ export class App extends Component {
             onClick={this.setPage}
           />
         )}
+        {process && <Message>{process}</Message>}
+        {process && <Loader />}
         {images.length !== 0 && <ImageGallery images={images} />}
-        {isLoading && <Loader />}
         {totalPages > 0 && (
           <ToolBar
             query={q}
