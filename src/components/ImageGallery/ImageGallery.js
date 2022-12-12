@@ -1,7 +1,7 @@
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { ImageModal } from 'components/Modal/Modal';
 import { Component } from 'react';
-import { Gallery } from './ImageGallery.styled';
+import { Gallery, ModalImage } from './ImageGallery.styled';
 
 export class ImageGallery extends Component {
   state = {
@@ -27,7 +27,7 @@ export class ImageGallery extends Component {
           isOpen={Boolean(this.state.lageImage)}
           onClose={this.onClose}
         >
-          <img
+          <ModalImage
             src={this.state.lageImage}
             alt="lageImage"
             onClick={this.onClose}

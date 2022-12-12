@@ -2,6 +2,10 @@ import Modal from 'react-modal';
 
 const modalStyles = {
   content: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
     padding: '0',
   },
 };
