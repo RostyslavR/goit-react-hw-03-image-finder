@@ -2,9 +2,9 @@ import { Component } from 'react';
 import { SearchBar } from 'components/SearchBar/SeachBar';
 import { fetchImages } from 'components/ImageApi/ImageApi';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
-import { ToolBar } from 'components/ToolBar/ToolBar';
 import { Message } from './Message/Message';
 import { Loader } from './Loader/Loader';
+import { Button } from './Button/Button';
 
 export class App extends Component {
   state = {
@@ -31,7 +31,10 @@ export class App extends Component {
           error: '',
         });
         const { images, totalPages } = await fetchImages(q, page);
-        this.setState({ images, totalPages });
+        this.setState(prevstate => ({
+          images: [...prevstate.images, ...images],
+        }));
+        this.setState({ totalPages });
       } catch {
         this.setState({
           error: 'Sorry, ... something is wrong.',
@@ -43,22 +46,10 @@ export class App extends Component {
     }
   }
 
-  setPage = step => {
-    const { page, totalPages } = this.state;
-
-    if ((page > 1 && step < 0) || (page < totalPages && step > 0)) {
-      this.setState(prevstate => ({
-        page: prevstate.page + step,
-      }));
-    }
-
-    if (step === 0) {
-      this.setState({ page: 1 });
-    }
-
-    if (step === totalPages) {
-      this.setState({ page: totalPages });
-    }
+  loadMore = () => {
+    this.setState(prevstate => ({
+      page: prevstate.page + 1,
+    }));
   };
 
   render() {
@@ -67,25 +58,14 @@ export class App extends Component {
       <>
         <SearchBar onSubmit={this.handlerSearch} />
         {error && <Message type={'error'}>{error}</Message>}
-        {totalPages > 0 && (
-          <ToolBar
-            query={q}
-            currentPage={page}
-            totalPages={totalPages}
-            onClick={this.setPage}
-          />
-        )}
-        {process && <Message>{process}</Message>}
-        {process && <Loader />}
         {images.length !== 0 && <ImageGallery images={images} />}
-        {totalPages > 0 && (
-          <ToolBar
-            query={q}
-            currentPage={page}
-            totalPages={totalPages}
-            onClick={this.setPage}
-          />
+        {totalPages > 0 && page < totalPages && !process && (
+          <Button onClick={this.loadMore} />
         )}
+        {(page === totalPages || totalPages === 0) && q !== '' && !process && (
+          <Message>that's all the pictures</Message>
+        )}
+        {process && <Loader />}
       </>
     );
   }

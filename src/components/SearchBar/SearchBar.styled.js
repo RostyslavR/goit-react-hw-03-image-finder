@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Header = styled.header`
   padding: 8px;
-  background-color: aqua;
+  background-color: blue;
 `;
 
 export const Form = styled.form`

@@ -27,7 +27,11 @@ export class ImageGallery extends Component {
           isOpen={Boolean(this.state.lageImage)}
           onClose={this.onClose}
         >
-          <img src={this.state.lageImage} alt="lageImage" width="480" />
+          <img
+            src={this.state.lageImage}
+            alt="lageImage"
+            onClick={this.onClose}
+          />
         </ImageModal>
       </>
     );

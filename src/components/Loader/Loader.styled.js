@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const LoaderBox = styled.div`
-  width: 480px;
-  padding: 20px;
+  width: 80px;
   margin: 0 auto;
 `;
